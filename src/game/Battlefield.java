@@ -295,20 +295,90 @@ public class Battlefield {
         }
 
         for (int i = 1; i <= 3; i++) {
-            if (y - 1 >= 0 && grid[x][y - 1] == Grid.SHIP) {
+            if (y - i >= 0 && grid[x][y - i] == Grid.SHIP) {
                 return false;
-            } else if (y - 1 >= 0 && grid[x][y - 1] != Grid.HIT) {
+            } else if (y - i >= 0 && grid[x][y - i] != Grid.HIT) {
                 break;
             }
         }
 
         for (int i = 1; i <= 3; i++) {
-            if (y + 1 <= 9 && grid[x][y + 1] == Grid.SHIP) {
+            if (y + i <= 9 && grid[x][y + i] == Grid.SHIP) {
                 return false;
-            } else if (y + 1 <= 9 && grid[x][y + 1] != Grid.HIT) {
+            } else if (y + i <= 9 && grid[x][y + i] != Grid.HIT) {
                 break;
             }
         }
         return true;
     }
+
+
+    // Обводим возрванный корабль знаками промаха
+    public void surroundDeadShip(int x, int y) {
+        List<int[]> deadShipCoords = new ArrayList<>();
+        deadShipCoords.add(new int[]{x, y});
+
+        for (int i = 1; i <= 3; i++) {
+            if (x - i >= 0 && grid[x - i][y] == Grid.HIT) {
+                deadShipCoords.add(new int[]{x - i, y});
+            } else {
+                break;
+            }
+        }
+
+        for (int i = 1; i <= 3; i++) {
+            if (x + i <= 9 && grid[x + i][y] == Grid.HIT) {
+                deadShipCoords.add(new int[]{x + i, y});
+            } else {
+                break;
+            }
+        }
+
+        for (int i = 1; i <= 3; i++) {
+            if (y - i >= 0 && grid[x][y - i] == Grid.HIT) {
+                deadShipCoords.add(new int[]{x, y - i});
+            } else {
+                break;
+            }
+        }
+
+        for (int i = 1; i <= 3; i++) {
+            if (y + i <= 9 && grid[x][y + i] == Grid.HIT) {
+                deadShipCoords.add(new int[]{x, y + i});
+            } else {
+                break;
+            }
+        }
+
+        for (int[] coord : deadShipCoords) {
+            int a = coord[0];
+            int b = coord[1];
+
+            if (a - 1 >= 0 && grid[a - 1][b] != Grid.HIT) {
+                grid[a - 1][b] = Grid.MISS;
+            }
+            if (a - 1 >= 0 && b + 1 <= 9 && grid[a - 1][b + 1] != Grid.SHIP) {
+                grid[a - 1][b + 1] = Grid.MISS;
+            }
+            if (b + 1 <= 9 && grid[a][b + 1] != Grid.HIT) {
+                grid[a][b + 1] = Grid.MISS;
+            }
+            if (a + 1 <= 9 && b + 1 <= 9 && grid[a + 1][b + 1] != Grid.HIT) {
+                grid[a + 1][b + 1] = Grid.MISS;
+            }
+            if (a + 1 <= 9 && grid[a + 1][b] != Grid.HIT) {
+                grid[a + 1][b] = Grid.MISS;
+            }
+            if (a + 1 <= 9 && b - 1 >= 0 && grid[a + 1][b - 1] != Grid.HIT) {
+                grid[a + 1][b - 1] = Grid.MISS;
+            }
+            if (b - 1 >= 0 && grid[a][b - 1] != Grid.HIT) {
+                grid[a][b - 1] = Grid.MISS;
+            }
+            if (a - 1 >= 0 && b - 1 >= 0 && grid[a - 1][b - 1] != Grid.HIT) {
+                grid[a - 1][b - 1] = Grid.MISS;
+            }
+        }
+    }
+
 }

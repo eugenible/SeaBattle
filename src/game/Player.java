@@ -51,6 +51,11 @@ public class Player {
                 enemy.getGrid()[x][y] = Grid.HIT;
                 this.enemyField.getGrid()[x][y] = Grid.HIT;
 
+                if (enemy.getField().isDead(x, y)) {
+                    this.enemyField.surroundDeadShip(x, y);
+                    enemy.getField().surroundDeadShip(x, y);
+                }
+
                 System.out.println("Ваше поле:");
                 this.myField.print();
                 System.out.println("Поле противника:");
@@ -68,6 +73,8 @@ public class Player {
                 }
                 System.out.println("Выстрели еще раз!");
 
+            } else if (enemy.getGrid()[x][y] == Grid.HIT) {
+                System.out.println("Ты уже бил по этому месту! Выстрели еще раз!");
             } else {
                 enemy.getGrid()[x][y] = Grid.MISS;
                 this.enemyField.getGrid()[x][y] = Grid.MISS;
